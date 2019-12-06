@@ -55,13 +55,13 @@ public class AutoNumberServiceImpl implements AutoNumberService {
                     sequenceSection = section.substring(1, section.length() - (nextSquenceValueStr.length() + 1)) + nextSquenceValueStr;
                 }
                 displayFormat = displayFormat.replace(section, sequenceSection);
-            } else if (section.equals("{YY}")) {
+            } else if (section.equals("{YY}") || section.equals("{yy}")) {
                 displayFormat = displayFormat.replace(section, new SimpleDateFormat("yy").format(new Date()));
-            } else if (section.equals("{YYYY}")) {
+            } else if (section.equals("{YYYY}") || section.equals("{yyyy}")) {
                 displayFormat = displayFormat.replace(section, new SimpleDateFormat("yyyy").format(new Date()));
-            } else if (section.equals("{MM}")) {
+            } else if (section.equals("{MM}") || section.equals("{mm}")) {
                 displayFormat = displayFormat.replace(section, new SimpleDateFormat("MM").format(new Date()));
-            } else if (section.equals("{DD}")) {
+            } else if (section.equals("{DD}") || section.equals("{dd}")) {
                 displayFormat = displayFormat.replace(section, new SimpleDateFormat("dd").format(new Date()));
             }
         }

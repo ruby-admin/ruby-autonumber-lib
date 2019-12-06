@@ -103,6 +103,14 @@ public class AutoNumberServiceImplTest {
     }
 
     @Test
+    public void createAutoNumberWithMonthYearDayAndPrefixAndSuffixLowerCase() {
+        long startingNumber = 1;
+        mockJdbiService(startingNumber);
+        String autoNumber = autoNumberServiceImpl.generateAutoNumber(tenantId, objectName, fieldName, "A-{0}-{yy}-{mm}-{dd}-B", startingNumber);
+        Assert.assertEquals("A-" + startingNumber + "-" + twoDigitYear + "-" + month + "-" + day + "-B", autoNumber);
+    }
+
+    @Test
     public void createAutoNumberWithPaddedZeros() {
         long startingNumber = 9;
         mockJdbiService(startingNumber);
