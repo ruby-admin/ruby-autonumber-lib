@@ -5,6 +5,9 @@ import com.ruby.autonumber.lib.mysql.AutoNumberJdbiService;
 
 import org.apache.commons.lang3.StringUtils;
 
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.regex.Matcher;
@@ -71,9 +74,40 @@ public class AutoNumberServiceImpl implements AutoNumberService {
 
     /**
      * Create the name of a sequence. We need to specifically create it so that future autonumbers can be incremented
+     * Sequence names can only be up to 64 characters max so we need to limit the name of the auto number field.
+     * @param tenantId
+     * @param objectName
+     * @param fieldName
      */
     private String createSequenceName(String tenantId, String objectName, String fieldName) {
-        // can't use - in MySQL
-        return "seq_" + tenantId.replace("-", "_") + "_" + objectName + "_" + fieldName;
+        try {
+            String combinedName = tenantId + objectName + fieldName;
+            return generateSequenceName(combinedName);
+        } catch (NoSuchAlgorithmException e) {
+            throw new AutoNumberException(e);
+        }
+    }
+
+    /**
+     * Generate a unique, 64-character string for the sequence table name.
+     * @return
+     * @throws NoSuchAlgorithmException
+     */
+    private String generateSequenceName(String combinedName) throws NoSuchAlgorithmException {
+        MessageDigest digest = MessageDigest.getInstance("SHA-256");
+        byte[] encodedhash = digest.digest(
+                combinedName.getBytes(StandardCharsets.UTF_8));
+        return convertToHex(encodedhash);
+    }
+
+    private String convertToHex(byte[] hash) {
+        StringBuilder hexString = new StringBuilder();
+        for (byte b : hash) {
+            String hex = Integer.toHexString(0xff & b);
+            if (hex.length() == 1)
+                hexString.append('0');
+            hexString.append(hex);
+        }
+        return "seq_" + hexString.toString().substring(0, 60);
     }
 }
