@@ -41,9 +41,15 @@ public final class MySqlDataSourceProperties {
     }
 
     public String getJdbcUrl() {
-        return "jdbc:mysql://" + properties.getProperty("jdbc.db_host") + ":" +
-                properties.getProperty("jdbc.db_port") + "/" + properties.getProperty("jdbc.db_name") +
-                "?zeroDateTimeBehavior=convertToNull&autoReconnect=true";
+        if(properties.getProperty("jdbc.db_host") == null
+                || properties.getProperty("jdbc.db_port") == null ||  properties.getProperty("jdbc.db_name") == null) {
+            return properties.getProperty("jdbc.url");
+        }
+        else {
+            return "jdbc:mysql://" + properties.getProperty("jdbc.db_host") + ":" +
+                    properties.getProperty("jdbc.db_port") + "/" + properties.getProperty("jdbc.db_name") +
+                    "?zeroDateTimeBehavior=convertToNull&autoReconnect=true";
+        }
     }
 
     public String getJdbcUsername() {
