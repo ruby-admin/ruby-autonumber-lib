@@ -14,6 +14,8 @@
         <mockito-core.version>3.1.0</mockito-core.version>
         <apache-commons-configuration.version>2.6</apache-commons-configuration.version>
         <commons-beanutils.version>1.9.4</commons-beanutils.version>
+        <ruby-commons.version>0.1.0-SNAPSHOT</ruby-commons.version>
+        <hamcrest.version>2.2</hamcrest.version>
     </properties>
 
     <dependencyManagement>
@@ -39,15 +41,32 @@
             <version>${apache-commons.version}</version>
         </dependency>
         <dependency>
+            <groupId>com.ruby</groupId>
+            <artifactId>ruby-commons</artifactId>
+            <version>${ruby-commons.version}</version>
+        </dependency>
+        <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <scope>test</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.hamcrest</groupId>
+                    <artifactId>hamcrest-core</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.mockito</groupId>
             <artifactId>mockito-core</artifactId>
             <version>${mockito-core.version}</version>
             <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.hamcrest</groupId>
+            <artifactId>hamcrest</artifactId>
+            <scope>test</scope>
+            <version>${hamcrest.version}</version>
         </dependency>
     </dependencies>
 
@@ -65,5 +84,5 @@
         </plugins>
     </build>
 
-    
+
 </project>
