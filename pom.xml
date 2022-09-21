@@ -3,12 +3,18 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>com.ruby.maven</groupId>
+        <artifactId>ruby-root</artifactId>
+        <version>0.2.0-SNAPSHOT</version>
+    </parent>
     <groupId>com.ruby</groupId>
     <artifactId>autonumber</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>0.0.2-SNAPSHOT</version>
 
     <properties>
-        <jdbi3-bom.version>3.8.2</jdbi3-bom.version>
+        <checkstyle.skip>true</checkstyle.skip>
+        <jdbi3-bom.version>3.32.0</jdbi3-bom.version>
         <apache-commons.version>3.9</apache-commons.version>
         <junit.version>4.12</junit.version>
         <mockito-core.version>3.1.0</mockito-core.version>
@@ -16,24 +22,15 @@
         <commons-beanutils.version>1.9.4</commons-beanutils.version>
         <ruby-commons.version>0.1.0-SNAPSHOT</ruby-commons.version>
         <hamcrest.version>2.2</hamcrest.version>
+        <guava.version>28.2-jre</guava.version>
+        <junit.version>4.12</junit.version>
     </properties>
-
-    <dependencyManagement>
-        <dependencies>
-            <dependency>
-                <groupId>org.jdbi</groupId>
-                <artifactId>jdbi3-bom</artifactId>
-                <type>pom</type>
-                <version>${jdbi3-bom.version}</version>
-                <scope>import</scope>
-            </dependency>
-        </dependencies>
-    </dependencyManagement>
 
     <dependencies>
         <dependency>
             <groupId>org.jdbi</groupId>
             <artifactId>jdbi3-core</artifactId>
+            <version>${jdbi3-bom.version}</version>
         </dependency>
         <dependency>
             <groupId>org.apache.commons</groupId>
@@ -46,9 +43,15 @@
             <version>${ruby-commons.version}</version>
         </dependency>
         <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>${guava.version}</version>
+        </dependency>
+        <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <scope>test</scope>
+            <version>${junit.version}</version>
             <exclusions>
                 <exclusion>
                     <groupId>org.hamcrest</groupId>

@@ -10,6 +10,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -59,13 +60,13 @@ public class AutoNumberServiceImpl implements AutoNumberService {
                 }
                 displayFormat = displayFormat.replace(section, sequenceSection);
             } else if (section.equals("{YY}") || section.equals("{yy}")) {
-                displayFormat = displayFormat.replace(section, new SimpleDateFormat("yy").format(new Date()));
+                displayFormat = displayFormat.replace(section, new SimpleDateFormat("yy", Locale.getDefault()).format(new Date()));
             } else if (section.equals("{YYYY}") || section.equals("{yyyy}")) {
-                displayFormat = displayFormat.replace(section, new SimpleDateFormat("yyyy").format(new Date()));
+                displayFormat = displayFormat.replace(section, new SimpleDateFormat("yyyy", Locale.getDefault()).format(new Date()));
             } else if (section.equals("{MM}") || section.equals("{mm}")) {
-                displayFormat = displayFormat.replace(section, new SimpleDateFormat("MM").format(new Date()));
+                displayFormat = displayFormat.replace(section, new SimpleDateFormat("MM", Locale.getDefault()).format(new Date()));
             } else if (section.equals("{DD}") || section.equals("{dd}")) {
-                displayFormat = displayFormat.replace(section, new SimpleDateFormat("dd").format(new Date()));
+                displayFormat = displayFormat.replace(section, new SimpleDateFormat("dd", Locale.getDefault()).format(new Date()));
             }
         }
         return displayFormat;
@@ -73,11 +74,8 @@ public class AutoNumberServiceImpl implements AutoNumberService {
 
 
     /**
-     * Create the name of a sequence. We need to specifically create it so that future autonumbers can be incremented
-     * Sequence names can only be up to 64 characters max so we need to limit the name of the auto number field.
-     * @param tenantId
-     * @param objectName
-     * @param fieldName
+     * Create the name of a sequence. We need to specifically create it so that future autonumbers can be incremented Sequence names can only be up to 64
+     * characters max so we need to limit the name of the auto number field.
      */
     private String createSequenceName(String tenantId, String objectName, String fieldName) {
         try {
@@ -90,8 +88,6 @@ public class AutoNumberServiceImpl implements AutoNumberService {
 
     /**
      * Generate a unique, 64-character string for the sequence table name.
-     * @return
-     * @throws NoSuchAlgorithmException
      */
     private String generateSequenceName(String combinedName) throws NoSuchAlgorithmException {
         MessageDigest digest = MessageDigest.getInstance("SHA-256");
@@ -104,8 +100,9 @@ public class AutoNumberServiceImpl implements AutoNumberService {
         StringBuilder hexString = new StringBuilder();
         for (byte b : hash) {
             String hex = Integer.toHexString(0xff & b);
-            if (hex.length() == 1)
+            if (hex.length() == 1) {
                 hexString.append('0');
+            }
             hexString.append(hex);
         }
         return "seq_" + hexString.toString().substring(0, 60);

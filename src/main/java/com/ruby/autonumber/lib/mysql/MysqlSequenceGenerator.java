@@ -92,7 +92,7 @@ public class MysqlSequenceGenerator implements SequenceGenerator {
 
             });
         } catch (Exception ex) {
-            throw new SequenceGenerationException("Cannot generate sequence with " + sequenceCategory);
+            throw new SequenceGenerationException("Cannot generate sequence with " + sequenceCategory, ex);
         }
 
     }

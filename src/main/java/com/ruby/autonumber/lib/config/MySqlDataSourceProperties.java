@@ -18,20 +18,20 @@ public final class MySqlDataSourceProperties {
 
     private MySqlDataSourceProperties() {
         properties = loadProperties();
-        if(System.getenv("DB_HOST") != null) {
+        if (System.getenv("DB_HOST") != null) {
             properties.setProperty("jdbc.db_host", System.getenv("DB_HOST"));
         }
-        if(System.getenv("DB_PORT") != null) {
+        if (System.getenv("DB_PORT") != null) {
             properties.setProperty("jdbc.db_port", System.getenv("DB_PORT"));
         }
-        if(System.getenv("DB_NAME") != null) {
+        if (System.getenv("DB_NAME") != null) {
             properties.setProperty("jdbc.db_name", System.getenv("DB_NAME"));
         }
 
     }
 
     private Properties loadProperties() {
-        try(InputStream is = this.getClass().getClassLoader().getResourceAsStream("application.properties")){
+        try (InputStream is = Thread.currentThread().getContextClassLoader().getResourceAsStream("application.properties")) {
             Properties properties = new Properties();
             properties.load(is);
             return properties;
@@ -41,11 +41,10 @@ public final class MySqlDataSourceProperties {
     }
 
     public String getJdbcUrl() {
-        if(properties.getProperty("jdbc.db_host") == null
-                || properties.getProperty("jdbc.db_port") == null ||  properties.getProperty("jdbc.db_name") == null) {
+        if (properties.getProperty("jdbc.db_host") == null
+                || properties.getProperty("jdbc.db_port") == null || properties.getProperty("jdbc.db_name") == null) {
             return properties.getProperty("jdbc.url");
-        }
-        else {
+        } else {
             return "jdbc:mysql://" + properties.getProperty("jdbc.db_host") + ":" +
                     properties.getProperty("jdbc.db_port") + "/" + properties.getProperty("jdbc.db_name") +
                     "?zeroDateTimeBehavior=convertToNull&autoReconnect=true";
@@ -59,6 +58,5 @@ public final class MySqlDataSourceProperties {
     public String getJdbcPassword() {
         return properties.getProperty("jdbc.password");
     }
-
 
 }
